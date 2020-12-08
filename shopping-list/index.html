@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Shopping List</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="app.css">
+    </head>
+    <body>
+        <main id="app">
+            <h1>{{ title }}</h1>
+            <form @submit.prevent="addItem">
+                <input v-model="newItem" type="text" name="newItem" id="newItem" placeholder="Add New Item" value="">
+                <button type="submit" name="submit">Add</button>
+            </form>
+
+            <button @click="clear">Clear List</button>
+            <ul>
+                <li v-for="item in itemList">
+                    <input type="checkbox" v-model="item.purchased">
+                    <span :class="{ purchased: item.purchased }">{{ item.name }}</span>
+                    <button @click="deleteItem(item)">Delete</button>
+                </li>
+            </ul>
+        </main>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>

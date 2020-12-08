@@ -1,0 +1,23 @@
+body{
+    background: #8B4513;
+    font: normal 16px 'Helvetica', sans-serif;
+    letter-spacing: -1px;
+    text-align: center;
+}
+
+main{
+    background: #98FB98;
+    border-radius: 1em;
+    padding: 3vw;
+    width: 50%;
+    margin: 3vw auto;
+}
+
+ul{
+    list-style-type: none;
+    text-align: left;
+}
+
+.purchased{
+    text-decoration: line-through;
+}
