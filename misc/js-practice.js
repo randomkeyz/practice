@@ -82,3 +82,7 @@ const videoData = [
 videoData.filter(function(suspect){
         return suspect.present;
 });
+
+// Projecting Example
+const presentSuspects = videoData.filter(suspect => suspect.present == true);
+const finalList = presentSuspects.map(suspect => suspect.name);
