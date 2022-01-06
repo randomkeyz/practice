@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+  <title>How's the Weather? | Today's Weather Forecast</title>
+</head>
+<body>
+
+    <div class="container my-5 mx-auto">
+
+        <h1 class="text-muted text-center my-4">How's the Weather?</h1>
+    
+        <form class="change-location my-4 text-center text-muted">
+          <label for="city">Enter a location for weather information</label>
+          <input type="text" name="city" class="form-control p-4">
+        </form>
+
+        <div class="container">
+          <div class="row"><h1 class="location-text text-center"></h1></div>
+          <div class="row">
+            <div class="col">
+              <!-- Current Weather -->
+              <div class="card rounded">
+                <!-- <img src="https://via.placeholder.com/400x300" class="time card-img-top"> -->
+                <h2>Current Weather:</h2>
+                <div class="icon bg-light mx-auto text-center">
+                  <img src="" alt="">
+                </div>
+                <div class="text-muted text-uppercase text-center details"></div>
+              </div>
+            </div>
+            <div class="col">
+              <!-- 1 Day Forecast-->
+              <div class="card rounded">
+                <h2>Today's Forecast:</h2>
+                <div class="text-muted text-uppercase text-center details-forecast"></div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card rounded">
+                <h2>12 Hour Forecast:</h2>
+                <div class="forecast12"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+  <script src="scripts/forecast.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
