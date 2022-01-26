@@ -1,0 +1,11 @@
+.row{
+    display: flex;
+    max-width: 60%;
+    margin: 0 auto 4em;
+}
+.player .card img:hover{
+    cursor: pointer;
+}
+.results{
+    color: red;
+}
