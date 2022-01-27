@@ -1,0 +1,12 @@
+.log{
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.log__row{
+    display: flex;
+}
+
+.log__cell{
+    width: 33%;
+}
