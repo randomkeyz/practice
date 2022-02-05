@@ -12,6 +12,7 @@ class Player {
         }
 
         this.rotation = 0;
+        this.opacity = 1;
 
         // Handling img
         const image = new Image();
@@ -35,6 +36,7 @@ class Player {
         //context.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         context.save();
+        context.globalAlpha = this.opacity;
         context.translate(
             player.position.x + player.width / 2,
             player.position.y + player.height / 2
@@ -263,6 +265,10 @@ const keys = {
 
 let frames = 0;
 let randomInt = Math.floor((Math.random() * 500) + 500);
+let game = {
+    over: false,
+    active: true
+}
 
 for(let i = 0; i < 15; i++){
     particles.push(new Particle({
@@ -272,7 +278,7 @@ for(let i = 0; i < 15; i++){
         },
         velocity: {
             x: 0,
-            y: 1
+            y: 0.3
         },
         radius: Math.random() * 3,
         color: 'white'
@@ -299,6 +305,8 @@ let createParticles = ({object, color, fades}) => {
 
 // Loop drawing of images
 const animate = () => {
+    if(!game.active) return;
+
     requestAnimationFrame(animate);
 
     // Adding bg fill
@@ -321,7 +329,7 @@ const animate = () => {
         } else particle.update();
     });
 
-    console.log(particles);
+    //console.log(particles);
 
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if(invaderProjectile.position.y + invaderProjectile.height >= canvas.height){
@@ -338,7 +346,13 @@ const animate = () => {
         ) {
             setTimeout(() => {
                 invaderProjectiles.splice(index, 1);
+                player.opacity = 0;
+                game.over = true;
             }, 0);
+
+            setTimeout(() => {
+                game.active = false;
+            }, 2000);
 
             createParticles({
                 object: player,
@@ -442,6 +456,8 @@ const animate = () => {
 animate();
 
 addEventListener('keydown', ({key}) => {
+    if(game.over) return
+
     //console.log(key);
     switch(key){
         case 'a':
