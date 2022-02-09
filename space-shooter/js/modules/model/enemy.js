@@ -1,3 +1,5 @@
+import game from './../controller/game.js';
+
 export default class Enemy {
     constructor() {
         this.width = 130;

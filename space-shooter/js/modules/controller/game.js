@@ -1,35 +1,37 @@
-// Controller
-const Game = (() => {
-    let _entities = [];
-    let _height = innerHeight;
+import Player from './../model/player.js';
+import Enemy from './../model/enemy.js';
+import physics from './../controller/physics.js';
+import renderer from './../view/renderer.js';
 
-    function _start() {
+// Controller
+class Game {
+    constructor() {
+        this.entities = [];
+        this.height = innerHeight;
+    }
+
+    start() {
         console.log('started');
-        _entities.push(new Player({x: 0, y:0}));
-        _entities.push(new Enemy({x: 0, y: 0}));
+        this.entities.push(new Player({x: 0, y:0}));
+        this.entities.push(new Enemy({x: 0, y: 0}));
                 
-        Physics.startMovementDetect();
+        physics.startMovementDetect();
 
         window.requestAnimationFrame(this.update.bind(this));
     };
 
-    function _update() {
-        for(var i = 0; i < _entities.length; i++){
-            _entities[i].update();
+    update() {
+        for(var i = 0; i < this.entities.length; i++){
+            this.entities[i].update();
         }
 
-        Renderer.render();
+        renderer.render();
         
         window.requestAnimationFrame(this.update.bind(this));
     };
+}
 
-    return {
-        start: _start,
-        update: _update,
-        entities: function() { return _entities; },
-        height: _height
-    }
+const game = new Game();
+Object.freeze(game);
 
-})();
-
-export default Game;
+export default game;

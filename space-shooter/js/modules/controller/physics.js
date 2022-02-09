@@ -1,26 +1,27 @@
 // Physics and movement
-const Physics = (() => {
-    function defaultStates(){
-        this.rightPressed: false,
-        this.leftPressed: false,
-        this.upPressed: false,
-        this.downPressed: false
-    }
+let keys = {
+    rightPressed: false,
+    leftPressed: false,
+    upPressed: false,
+    downPressed: false
+}
 
-    function _startMovementDetect(){
+class Physics {
+
+    startMovementDetect(){
         addEventListener('keydown', ({key}) => {
             switch(key){
                 case 'ArrowRight':
-                    this.rightPressed = true;
+                    keys.rightPressed = true;
                     break;
                 case 'ArrowLeft':
-                    this.leftPressed = true;
+                    keys.leftPressed = true;
                     break;
                 case 'ArrowUp':
-                    this.upPressed = true;
+                    keys.upPressed = true;
                     break;
                 case 'ArrowDown':
-                    this.downPressed = true;
+                    keys.downPressed = true;
                     break;
             }
         });
@@ -28,37 +29,34 @@ const Physics = (() => {
         addEventListener('keyup', ({key}) => {
             switch(key){
                 case 'ArrowRight':
-                    this.rightPressed = false;
+                    keys.rightPressed = false;
                     break;
                 case 'ArrowLeft':
-                    this.leftPressed = false;
+                    keys.leftPressed = false;
                     break;
                 case 'ArrowUp':
-                    this.upPressed = false;
+                    keys.upPressed = false;
                     break;
                 case 'ArrowDown':
-                    this.downPressed = false;
+                    keys.downPressed = false;
                     break;
             }
         })
     }
 
-    function _updatePlayerMovement(player){
-        if(keys.right.pressed && player.x <= innerWidth - player.width / 2) player.x += player.speed;
-        if(keys.left.pressed && player.x >= 0) player.x -= player.speed;
-        if(keys.up.pressed && player.y >= 0) player.y -= player.speed;
-        if(keys.down.pressed && player.y <= innerHeight - player.height / 2) player.y += player.speed;
+    updatePlayerMovement(player){
+        if(keys.rightPressed && player.x <= innerWidth - player.width / 2) player.x += player.speed;
+        if(keys.leftPressed && player.x >= 0) player.x -= player.speed;
+        if(keys.upPressed && player.y >= 0) player.y -= player.speed;
+        if(keys.downPressed && player.y <= innerHeight - player.height / 2) player.y += player.speed;
     }
 
-    function _updateEnemyMovement(enemy){
+    updateEnemyMovement(enemy){
         enemy.y += 1;
     }
+}
 
-    return {
-        startMovementDetect: _startMovementDetect,
-        updatePlayerMovement: _updatePlayerMovement,
-        updateEnemyMovement: _updateEnemyMovement
-    }
-})();
+const physics = new Physics();
+Object.freeze(physics);
 
-export default Physics;
+export default physics;
