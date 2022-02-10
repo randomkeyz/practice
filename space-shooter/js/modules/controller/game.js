@@ -2,7 +2,7 @@ import Player from './../model/player.js';
 import Enemy from './../model/enemy.js';
 import physics from './../controller/physics.js';
 import renderer from './../view/renderer.js';
-import { setRandomInterval } from '../utility.js';
+import { setRandomInterval } from './../utility.js';
 
 // Controller
 class Game {
@@ -19,13 +19,10 @@ class Game {
         // Run event listeners
         physics.startMovementDetect();
 
-        // Create new enemies randomly
-        const spawnEnemy = () => {
-            console.log(Math.floor(Math.random() * innerWidth));
-            if(this.entities.length < 10){
-                this.entities.push(new Enemy());
-            }
-        };
+        // Create new enemies randomly. Max 10 num of entities allowed.
+        const spawnEnemy = () => { 
+            if(this.entities.length < 10) this.entities.push(new Enemy());
+        }
         const spawnEnemyInt = setRandomInterval(spawnEnemy, 1000, 5000);
 
         window.requestAnimationFrame(this.update.bind(this));
@@ -33,8 +30,6 @@ class Game {
 
     // Gets called every sec
     update() {
-        
-        console.log(this.entities);
         for(var i = 0; i < this.entities.length; i++){
             // Calling update on enemy/player class respectively
             this.entities[i].update();
