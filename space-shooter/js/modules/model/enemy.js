@@ -4,7 +4,7 @@ export default class Enemy {
     constructor() {
         this.width = 130;
         this.height = 115;
-        this.x = 0;
+        this.x = Math.floor(Math.random() * innerWidth);
         this.y = 0;
         this.hp = 3;
         this.direction = 1;

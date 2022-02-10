@@ -1,4 +1,6 @@
-// Physics and movement
+import game from './game.js';
+
+// Default key states
 let keys = {
     rightPressed: false,
     leftPressed: false,
@@ -7,7 +9,6 @@ let keys = {
 }
 
 class Physics {
-
     startMovementDetect(){
         addEventListener('keydown', ({key}) => {
             switch(key){
@@ -51,8 +52,12 @@ class Physics {
         if(keys.downPressed && player.y <= innerHeight - player.height / 2) player.y += player.speed;
     }
 
-    updateEnemyMovement(enemy){
+    updateEnemyMovement(enemy, index){
         enemy.y += 1;
+
+        if(enemy.y >= innerHeight) {
+            game.entities.splice(index, 1);
+        } 
     }
 }
 
