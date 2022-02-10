@@ -1,5 +1,5 @@
 import game from './../controller/game.js';
-import physics from './../controller/physics.js';
+import physics, { keys } from './../controller/physics.js';
 import Player from './../model/player.js';
 import Enemy from './../model/enemy.js';
 
@@ -9,16 +9,22 @@ class Renderer {
         this.context = this.canvas.getContext('2d');
     }
 
-    drawPlayer(context, player, index){
-        let scale = 0.5;
+    drawPlayer(context, player, index, spritePos){
+        let scale = 0.4;
         const playerImg = new Image();
         playerImg.src = `./imgs/${player.img}`;
         
         physics.updatePlayerMovement(player, index);
 
         playerImg.onload = (() => {
+            // image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight
             context.drawImage(
-                playerImg, 
+                playerImg,
+                // Sprite # you want * width of sheet divided by number of sprites (starts at 0)
+                spritePos * playerImg.width / 3, 
+                0,
+                playerImg.width / 3, // Spritesheet width dividedd by the number of sprites
+                playerImg.height,
                 player.x, 
                 player.y,
                 player.width * scale,
@@ -28,7 +34,7 @@ class Renderer {
     }
 
     drawEnemy(context, enemy, index){
-        let scale = 0.35;
+        let scale = 0.5;
         const enemyImg = new Image();
         enemyImg.src = `./imgs/${enemy.img}`;
         
@@ -57,13 +63,21 @@ class Renderer {
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Drawing entities
-        let entity,
+        let spritePos = 1,
+            entity,
             entities = game.entities;
 
         for(let i=0; i < entities.length; i++){
             entity = entities[i];
 
-            if(entity instanceof Player) this.drawPlayer(this.context, entity, i);
+            if(entity instanceof Player) {
+                // Change sprite based on key press
+                if(keys.leftPressed) spritePos = 0;
+                else if (keys.rightPressed) spritePos = 2;
+
+                this.drawPlayer(this.context, entity, i, spritePos);
+            }
+
             if(entity instanceof Enemy) this.drawEnemy(this.context, entity, i);
         }
 

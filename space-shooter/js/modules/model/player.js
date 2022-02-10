@@ -9,7 +9,7 @@ export default class Player {
         this.hp = 4;
         this.direction = 1;
         this.speed = 3
-        this.img = 'player.png';
+        this.img = 'player-ss.png';
     }
 
     update() {

@@ -13,6 +13,7 @@ class Physics {
         addEventListener('keydown', ({key}) => {
             switch(key){
                 case 'ArrowRight':
+
                     keys.rightPressed = true;
                     break;
                 case 'ArrowLeft':
@@ -55,13 +56,13 @@ class Physics {
     updateEnemyMovement(enemy, index){
         enemy.y += 1;
 
-        if(enemy.y >= innerHeight) {
-            game.entities.splice(index, 1);
-        } 
+        // Remove enemy from entity array if it falls below view
+        if(enemy.y >= innerHeight) game.entities.splice(index, 1);
     }
 }
 
 const physics = new Physics();
 Object.freeze(physics);
 
-export default physics;
+export default physics; 
+export { keys };
