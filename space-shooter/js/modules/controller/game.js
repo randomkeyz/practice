@@ -7,13 +7,21 @@ import { setRandomInterval } from './../utility.js';
 // Controller
 class Game {
     constructor() {
+        this.player = new Player();
         this.entities = [];
+        this.projectiles = [];
         this.height = innerHeight;
     }
 
     start() {
+        const redAlert = new Audio('/audio/redalert.mp3');
+        const bgm = new Audio('/audio/tngend.mp3');
+        redAlert.play();
+        bgm.loop = true;
+        bgm.play();
+
         // Default entities on start
-        this.entities.push(new Player());
+        this.entities.push(this.player);
         this.entities.push(new Enemy());
                 
         // Run event listeners
