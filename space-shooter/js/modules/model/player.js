@@ -2,10 +2,10 @@ import game from './../controller/game.js';
 
 export default class Player {
     constructor() {
-        this.width = 73;
-        this.height = 146;
+        this.width = 58;
+        this.height = 95;
         this.x = innerWidth / 2 - this.width / 2;
-        this.y = innerHeight - this.height + 40;
+        this.y = innerHeight - this.height + 10;
         this.hp = 4;
         this.direction = 1;
         this.speed = 3
