@@ -17,7 +17,19 @@
                 margin: 0;
                 padding: 0;
             }
-            body{overflow: hidden;}
+            body{
+                overflow: hidden;
+                background: #000;
+            }
+            .wrapper{
+                display: flex;
+                width: 100%;
+                justify-content: center;
+            }
+            button{
+                width: 100px;
+                height: 40px;
+            }
         </style>
     </head>
     <body>
@@ -25,6 +37,9 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <canvas></canvas>
+        <div class="wrapper">
+            <button id="startGame">START</button>
+        </div>
         
         <script type="module" src="js/main.js"></script>
     </body>
