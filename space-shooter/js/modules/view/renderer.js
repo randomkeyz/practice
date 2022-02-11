@@ -2,6 +2,7 @@ import game from './../controller/game.js';
 import physics, { keys } from './../controller/physics.js';
 import Player from './../model/player.js';
 import Enemy from './../model/enemy.js';
+import Projectile from './../model/projectile.js';
 
 class Renderer {
     constructor() {
@@ -9,10 +10,21 @@ class Renderer {
         this.context = this.canvas.getContext('2d');
     }
 
+    drawProjectile(x, y, context, color, projectile, index) {
+        context.beginPath();
+        // ctx.arc(x, y, radius, startAngle, endAngle [, counterclockwise]);
+        context.arc(x, y, 4, 0, 2 * Math.PI);
+        context.fillStyle = color;
+        context.fill();
+        context.closePath();
+
+        physics.updateProjectileMovement(projectile, index);
+    }
+
     drawPlayer(context, player, index, spritePos){
-        let scale = 0.4;
+        let scale = 0.6;
         const playerImg = new Image();
-        playerImg.src = `./imgs/${player.img}`;
+        playerImg.src = `./images/${player.img}`;
         
         physics.updatePlayerMovement(player, index);
 
@@ -36,7 +48,7 @@ class Renderer {
     drawEnemy(context, enemy, index){
         let scale = 0.5;
         const enemyImg = new Image();
-        enemyImg.src = `./imgs/${enemy.img}`;
+        enemyImg.src = `./images/${enemy.img}`;
         
         physics.updateEnemyMovement(enemy, index);
 
@@ -80,6 +92,13 @@ class Renderer {
 
             if(entity instanceof Enemy) this.drawEnemy(this.context, entity, i);
         }
+
+        // Draw projectiles
+        game.projectiles.forEach((projectile, index) => {
+            this.drawProjectile(projectile.x, projectile.y, this.context, projectile.color, projectile, index)
+        });
+
+        console.log(game.projectiles);
 
     }
 }

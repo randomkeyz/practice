@@ -1,11 +1,13 @@
 import game from './game.js';
+import Projectile from './../model/projectile.js';
 
 // Default key states
 let keys = {
     rightPressed: false,
     leftPressed: false,
     upPressed: false,
-    downPressed: false
+    downPressed: false,
+    spacePressed: false
 }
 
 class Physics {
@@ -13,7 +15,6 @@ class Physics {
         addEventListener('keydown', ({key}) => {
             switch(key){
                 case 'ArrowRight':
-
                     keys.rightPressed = true;
                     break;
                 case 'ArrowLeft':
@@ -24,6 +25,17 @@ class Physics {
                     break;
                 case 'ArrowDown':
                     keys.downPressed = true;
+                    break;
+                case ' ':
+                    game.projectiles.push(
+                        new Projectile(
+                            game.player.x + game.player.width / 2, 
+                            game.player.y, 
+                            'blue', 
+                            -1
+                        )
+                    );
+                    keys.spacePressed = true;
                     break;
             }
         });
@@ -42,6 +54,9 @@ class Physics {
                 case 'ArrowDown':
                     keys.downPressed = false;
                     break;
+                case ' ':
+                    keys.spacePressed = false;
+                    break;
             }
         })
     }
@@ -58,6 +73,14 @@ class Physics {
 
         // Remove enemy from entity array if it falls below view
         if(enemy.y >= innerHeight) game.entities.splice(index, 1);
+    }
+
+    updateProjectileMovement(projectile, index){
+        projectile.y -= 1;
+
+        // Remove projectile from projectiles array if it falls below view
+        if(projectile.y <= 0) game.projectiles.splice(index, 1);
+
     }
 }
 
