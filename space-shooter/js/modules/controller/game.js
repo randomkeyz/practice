@@ -23,28 +23,26 @@ class Game {
 
     // Should only be called once. Multiple calls will result in compounding loops and increase in game speed
     start() {
-            const redAlert = new Audio('/audio/redalert.mp3');
-            const bgm = new Audio('/audio/tngend2.mp3');
-            redAlert.play();
-            bgm.loop = true;
-            bgm.play();
+        const redAlert = new Audio('/audio/redalert.mp3');
+        const bgm = new Audio('/audio/tngend2.mp3');
+        redAlert.play();
+        bgm.loop = true;
+        bgm.play();
 
-            // Default entities on start
-            this.entities.push(this.player);
-            this.entities.push(new Enemy());
-                    
-            // Run event listeners
-            physics.startMovementDetect();
+        // Default entities on start
+        this.entities.push(this.player);
+        this.entities.push(new Enemy());
+                
+        // Run event listeners
+        physics.startMovementDetect();
 
-            // Create new enemies randomly. Max 10 num of entities allowed.
-            const spawnEnemy = () => { 
-                if(this.entities.length < 10) this.entities.push(new Enemy());
-            }
-            const spawnEnemyInt = setRandomInterval(spawnEnemy, 500, 2500);
+        // Create new enemies randomly. Max 10 num of entities allowed.
+        const spawnEnemy = () => { 
+            if(this.entities.length < 10) this.entities.push(new Enemy());
+        }
+        const spawnEnemyInt = setRandomInterval(spawnEnemy, 500, 2500);
 
-            requestAnimationFrame(this.update.bind(this));
-
-            console.log('start');
+        requestAnimationFrame(this.update.bind(this));
     };
 
     // Gets called every sec
