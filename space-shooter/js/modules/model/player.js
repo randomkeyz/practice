@@ -1,14 +1,16 @@
 import game from './../controller/game.js';
+import Projectile from './../model/projectile.js';
 
 export default class Player {
-    constructor() {
+    constructor(projectiles = 0) {
         this.width = 58;
         this.height = 95;
         this.x = innerWidth / 2 - this.width / 2;
         this.y = innerHeight - this.height + 10;
         this.hp = 4;
-        this.speed = 3
+        this.speed = 2
         this.img = 'player-ss.png';
+        this.projectiles = projectiles;
     }
 
     update() {
@@ -42,7 +44,28 @@ export default class Player {
                 this.height * scale
             );
         })();
+    }
 
+    fire(){
+        // Check to see how many torpedos are active. Only 3 on screen at a time.
+        const torpedoCount = game.projectiles.filter(projectile => {
+            return projectile.type === 'player';
+        });
 
+        if(torpedoCount.length < 3){
+            // Play torpedo sound
+            const torpedo = new Audio('/audio/player_torpedo.mp3');
+            torpedo.play();
+
+            // Create new projectile and add to list
+            game.projectiles.push(
+                new Projectile(
+                    game.player.x + game.player.width / 2 - 12, 
+                    game.player.y, 
+                    '#15f4ee', 
+                    'player'
+                )
+            );
+        }
     }
 }

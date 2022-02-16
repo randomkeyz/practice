@@ -1,5 +1,4 @@
 import game from './game.js';
-import Projectile from './../model/projectile.js';
 
 class Physics {
     startMovementDetect(){
@@ -18,14 +17,7 @@ class Physics {
                     game.keys.downPressed = true;
                     break;
                 case ' ':
-                    game.projectiles.push(
-                        new Projectile(
-                            game.player.x + game.player.width / 2, 
-                            game.player.y, 
-                            'blue', 
-                            -1
-                        )
-                    );
+                    game.player.fire();
                     game.keys.spacePressed = true;
                     break;
             }
@@ -50,6 +42,10 @@ class Physics {
                     break;
             }
         })
+    }
+
+    detectCollision(obj) {
+        
     }
 }
 

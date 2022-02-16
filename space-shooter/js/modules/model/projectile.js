@@ -1,16 +1,16 @@
 import game from './../controller/game.js';
 
 export default class Projectile{
-    constructor(x, y, color, direction, speed) {
+    constructor(x, y, color, type) {
         this.x = x;
         this.y = y;
-        this.speed = speed;
+        this.speed = 8;
         this.color = color;
-        this.direction = direction;
+        this.type = type;
     }
 
     update(index) {
-        this.y -= 1;
+        this.y -= this.speed;
 
         // Remove projectile from projectiles array if it falls below view
         if(this.y <= 0) game.projectiles.splice(index, 1);
