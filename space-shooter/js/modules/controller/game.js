@@ -24,7 +24,7 @@ class Game {
     // Should only be called once. Multiple calls will result in compounding loops and increase in game speed
     start() {
             const redAlert = new Audio('/audio/redalert.mp3');
-            const bgm = new Audio('/audio/tngend.mp3');
+            const bgm = new Audio('/audio/tngend2.mp3');
             redAlert.play();
             bgm.loop = true;
             bgm.play();
@@ -40,7 +40,7 @@ class Game {
             const spawnEnemy = () => { 
                 if(this.entities.length < 10) this.entities.push(new Enemy());
             }
-            const spawnEnemyInt = setRandomInterval(spawnEnemy, 1000, 5000);
+            const spawnEnemyInt = setRandomInterval(spawnEnemy, 500, 2500);
 
             requestAnimationFrame(this.update.bind(this));
 
