@@ -142,6 +142,10 @@ class Physics {
 
                     let aIndex = game.entities.findIndex(entity => entity === pair.a);
                     game.entities.splice(aIndex, 1);
+
+                    setTimeout(() => {
+                        game.state.running = false;
+                    }, 1);
                 }
 
                 // Resolve enemy collision
@@ -152,6 +156,9 @@ class Physics {
                     // Once hp reaches 0, remove entity and set explosion
                     game.entities.splice(bIndex, 1);
                     this.explosion(pair.b);
+
+                    // Update score
+                    game.state.score += 10;
                 }
             }
         });

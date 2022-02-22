@@ -10,36 +10,21 @@
         <title>Space Shooter</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <style>
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
-            body{
-                overflow: hidden;
-                background: #000;
-            }
-            .wrapper{
-                display: flex;
-                width: 100%;
-                justify-content: center;
-            }
-            button{
-                width: 100px;
-                height: 40px;
-            }
-        </style>
+        <link rel="stylesheet" href="styles/main.css">
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
         <canvas></canvas>
-        <div class="wrapper">
+        <section id="main">
+            <h1>SPACE SHOOTER</h1>
+            <p>Your shuttle has boldy gone into enemy territory. Send as many enemies as you can to Sto'Vo'Kor to survive!</p>
+            <h2>Instructions:</h2>
+            <ul>
+                <li>Up, Down, Left, and Right arrow keys to steer</li>
+                <li>Spacebar to shoot (3 shots before cooldown cycle)</li>
+            </ul>
             <button id="startGame">START</button>
-        </div>
+            <p>(Please adjust your volume. This game uses sound.)</p>
+        </section>
         
         <script type="module" src="js/main.js"></script>
     </body>
