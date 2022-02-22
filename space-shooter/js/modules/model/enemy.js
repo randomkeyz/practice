@@ -1,15 +1,27 @@
 import game from './../controller/game.js';
+import renderer from './../view/renderer.js';
 import Projectile from './../model/projectile.js';
+import Boundary from './boundary.js';
 
 export default class Enemy {
     constructor() {
-        this.width = 130;
-        this.height = 115;
+        this.width = 108;
+        this.height = 97;
         this.x = Math.floor(Math.random() * innerWidth - this.width / 2);
         this.y = 0;
-        this.hp = 3;
+        this.hp = 1;
         this.img = 'enemy.png';
-        this.speed = 1.5;
+        this.speed = 1;
+        this.scale = 0.75;
+    }
+
+    boundary() {
+        return new Boundary(
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
     }
 
     update(index) {
@@ -18,10 +30,13 @@ export default class Enemy {
 
         // Remove enemy from entity array if it falls below view
         if(this.y >= innerHeight) game.entities.splice(index, 1);
+
+        // Random fire
+        const random = Math.floor(Math.random() * 100);
+        if(random <= 0.5) this.fire();
     }
 
-    draw(context, index){
-        let scale = 0.5;
+    draw(index){
         const enemyImg = new Image();
         enemyImg.src = `./images/${this.img}`;
         
@@ -31,32 +46,34 @@ export default class Enemy {
         //context.rotate(180 * Math.PI / 180);
 
         enemyImg.onload = (() => {
-            context.drawImage(
+            renderer.context.drawImage(
                 enemyImg, 
                 this.x, 
                 this.y,
-                this.width * scale,
-                this.height * scale
+                this.width * this.scale,
+                this.height * this.scale
             );
         })();
     }
 
-    fire(enemy){
-        // Check to see how many torpedos are active. Only 3 on screen at a time.
-        const torpedoCount = game.projectiles.filter(projectile => {
+    fire(){
+        // Check to see how many projectiles are active. Only 3 on screen at a time.
+        const projectileCount = game.projectiles.filter(projectile => {
             return projectile.type === 'enemy';
         });
 
-        if(torpedoCount.length < 3){
-            // Play torpedo sound
-            const torpedo = new Audio('/audio/klingon_torpedo.mp3');
-            torpedo.play();
+        console.log(projectileCount);
+
+        if(projectileCount.length < 3){
+            // Play projectile sound
+            const projectile = new Audio('/audio/klingon_torpedo.mp3');
+            projectile.play();
 
             // Create new projectile and add to list
             game.projectiles.push(
                 new Projectile(
-                    enemy.x + enemy.width / 2 - 12, 
-                    enemy.y, 
+                    this.x + this.width / 2 - 12, 
+                    this.y + this.height, 
                     'red', 
                     'enemy'
                 )

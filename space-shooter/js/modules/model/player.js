@@ -1,5 +1,7 @@
 import game from './../controller/game.js';
+import renderer from './../view/renderer.js';
 import Projectile from './../model/projectile.js';
+import Boundary from './boundary.js';
 
 export default class Player {
     constructor(projectiles = 0) {
@@ -7,22 +9,30 @@ export default class Player {
         this.height = 95;
         this.x = innerWidth / 2 - this.width / 2;
         this.y = innerHeight - this.height + 10;
-        this.hp = 4;
-        this.speed = 2
+        this.hp = 1;
+        this.speed = 3;
         this.img = 'player-ss.png';
         this.projectiles = projectiles;
     }
 
-    update() {
-            // Checks movement
-            if(game.keys.rightPressed && this.x <= innerWidth - this.width / 2) this.x += this.speed;
-            if(game.keys.leftPressed && this.x >= 0) this.x -= this.speed;
-            if(game.keys.upPressed && this.y >= 0) this.y -= this.speed;
-            if(game.keys.downPressed && this.y <= innerHeight - this.height / 2) this.y += this.speed;
-
+    boundary() {
+        return new Boundary(
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
     }
 
-    draw(context, index, spritePos){
+    update() {
+        // Checks movement
+        if(game.keys.rightPressed && this.x <= innerWidth - this.width / 2) this.x += this.speed;
+        if(game.keys.leftPressed && this.x >= 0) this.x -= this.speed;
+        if(game.keys.upPressed && this.y >= 0) this.y -= this.speed;
+        if(game.keys.downPressed && this.y <= innerHeight - this.height / 2) this.y += this.speed;
+    }
+
+    draw(index, spritePos){
         let scale = 0.6;
         const playerImg = new Image();
         playerImg.src = `./images/${this.img}`;
@@ -31,7 +41,7 @@ export default class Player {
 
         playerImg.onload = (() => {
             // image, srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight
-            context.drawImage(
+            renderer.context.drawImage(
                 playerImg,
                 // Sprite # you want * width of sheet divided by number of sprites (starts at 0)
                 spritePos * playerImg.width / 3, 
@@ -47,15 +57,15 @@ export default class Player {
     }
 
     fire(){
-        // Check to see how many torpedos are active. Only 3 on screen at a time.
-        const torpedoCount = game.projectiles.filter(projectile => {
+        // Check to see how many projectiles are active. Only 3 on screen at a time.
+        const projectileCount = game.projectiles.filter(projectile => {
             return projectile.type === 'player';
         });
 
-        if(torpedoCount.length < 3){
-            // Play torpedo sound
-            const torpedo = new Audio('/audio/player_torpedo.mp3');
-            torpedo.play();
+        if(projectileCount.length < 3){
+            // Play projectile sound
+            const projectile = new Audio('/audio/player_torpedo.mp3');
+            projectile.play();
 
             // Create new projectile and add to list
             game.projectiles.push(
