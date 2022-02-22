@@ -29,15 +29,32 @@ class Renderer {
                 if(game.keys.leftPressed) spritePos = 0;
                 else if (game.keys.rightPressed) spritePos = 2;
 
-                entity.draw(this.context, i, spritePos);
+                entity.draw(i, spritePos);
             }
 
-            if(entity instanceof Enemy) entity.draw(this.context, i);
+            if(entity instanceof Enemy) entity.draw(i);
         }
 
-        // Draw projectiles
+        // Draw projectiles and update position
         game.projectiles.forEach((projectile, index) => {
-            projectile.draw(projectile.x, projectile.y, this.context, projectile.color, index)
+            let color;
+            if(projectile.type === 'player') color = '#4fc3f7';
+            else color = 'red';
+                
+            projectile.draw(projectile.x, projectile.y, color, index);
+        });
+
+        // Draw and update particles
+        if(game.particles.length <= 0 ) return; // returns if no particles present
+        game.particles.forEach((particle, i) => {
+            if(particle.position.y - particle.radius >= innerHeight){
+                particle.position.x = Math.random() * innerWidth;
+                particle.position.y = -particle.radius;
+            }
+    
+            // Remove particles that are no longer visible or run update
+            if(particle.opacity <= 0) game.particles.splice(i, 1);
+            else particle.update();
         });
     }
 }

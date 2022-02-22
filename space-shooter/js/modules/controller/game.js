@@ -14,12 +14,14 @@ class Game {
         spacePressed: false
     }) {
         this.player = new Player();
-        this.entities = [];
-        this.projectiles = [];
+        this.entities = []; // holds player and enemies
+        this.projectiles = []; // holds all shots by player/enemies
+        this.particles = []; // holds stars in the bg
         this.height = innerHeight;
         this.keys = keyState;
         this.running = running;
     }
+    
 
     // Should only be called once. Multiple calls will result in compounding loops and increase in game speed
     start() {
@@ -27,6 +29,7 @@ class Game {
         const bgm = new Audio('/audio/tngend2.mp3');
         redAlert.play();
         bgm.loop = true;
+        bgm.volume -= 0.2;
         bgm.play();
 
         // Default entities on start
@@ -36,9 +39,9 @@ class Game {
         // Run event listeners
         physics.startMovementDetect();
 
-        // Create new enemies randomly. Max 10 num of entities allowed.
+        // Create new enemies randomly. Max 5 num of entities allowed.
         const spawnEnemy = () => { 
-            if(this.entities.length < 10) this.entities.push(new Enemy());
+            if(this.entities.length < 5) this.entities.push(new Enemy());
         }
         const spawnEnemyInt = setRandomInterval(spawnEnemy, 500, 2500);
 
@@ -47,12 +50,9 @@ class Game {
 
     // Gets called every sec
     update() {
-        this.entities.forEach((entity, index) => {
-            entity.update(index);
-        });
-
+        physics.detectCollision();
         renderer.render();
-        
+
         requestAnimationFrame(this.update.bind(this));
     };
 }
