@@ -11,8 +11,8 @@ class Renderer {
     // Gets called every sec
     render() {
         // Drawing canvas
-        this.canvas.width = innerWidth;
-        this.canvas.height = innerHeight;
+        this.canvas.width = game.width;
+        this.canvas.height = game.height;
         this.context.fillStyle = 'black';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -47,8 +47,8 @@ class Renderer {
         // Draw and update particles
         if(game.particles.length <= 0 ) return; // returns if no particles present
         game.particles.forEach((particle, i) => {
-            if(particle.position.y - particle.radius >= innerHeight){
-                particle.position.x = Math.random() * innerWidth;
+            if(particle.position.y - particle.radius >= game.height){
+                particle.position.x = Math.random() * game.width;
                 particle.position.y = -particle.radius;
             }
     

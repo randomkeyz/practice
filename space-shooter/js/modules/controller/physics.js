@@ -21,7 +21,11 @@ class Physics {
                     game.keys.downPressed = true;
                     break;
                 case ' ':
-                    game.player.fire();
+                    // Filter for player entity and fire
+                    game.entities
+                        .filter(entity => entity instanceof Player)[0]
+                        .fire();
+
                     game.keys.spacePressed = true;
                     break;
             }
@@ -83,16 +87,15 @@ class Physics {
         // All possible pairs of things that can collide
         let collisionPairs = [];
 
-        const playerProjectiles = game.projectiles.filter(projectile => {
-            return projectile.type === 'player';
-        });
+        const playerProjectiles = game.projectiles.filter(projectile => projectile.type === 'player');
+        const player = game.entities.filter(entity => entity instanceof Player)[0];
 
         // Enemies loop
         game.entities
             .filter(entity => entity instanceof Enemy)
             .forEach(enemy => {
                 // player ship vs enemy ship
-                collisionPairs.push({a: game.player, b: enemy});
+                collisionPairs.push({a: player, b: enemy});
 
                 // player projectile vs enemy
                 playerProjectiles.forEach(playerProjectile => {
@@ -105,7 +108,7 @@ class Physics {
             .filter(projectile => projectile.type === 'enemy')
             .forEach(enemyProjectile => {
                 // Check enemy projectiles vs player
-                collisionPairs.push({a: game.player, b: enemyProjectile});
+                collisionPairs.push({a: player, b: enemyProjectile});
 
                 // Check player torpedo vs enemy torpedo
                 playerProjectiles.forEach(playerProjectile => {

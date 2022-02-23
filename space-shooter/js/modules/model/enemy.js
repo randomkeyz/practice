@@ -7,7 +7,7 @@ export default class Enemy {
     constructor() {
         this.width = 108;
         this.height = 97;
-        this.x = Math.floor(Math.random() * innerWidth - this.width / 2);
+        this.x = Math.floor(Math.random() * game.width - this.width / 2);
         this.y = 0;
         this.hp = 1;
         this.img = 'enemy.png';
@@ -29,7 +29,7 @@ export default class Enemy {
         this.y += this.speed;
 
         // Remove enemy from entity array if it falls below view
-        if(this.y >= innerHeight) game.entities.splice(index, 1);
+        if(this.y >= game.height) game.entities.splice(index, 1);
 
         // Random fire
         const random = Math.floor(Math.random() * 100);

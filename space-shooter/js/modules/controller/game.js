@@ -13,7 +13,6 @@ class Game {
         downPressed: false,
         spacePressed: false
     }) {
-        this.player = new Player();
         this.entities = []; // holds player and enemies
         this.projectiles = []; // holds all shots by player/enemies
         this.particles = []; // holds explosion particles
@@ -21,6 +20,8 @@ class Game {
         this.keys = keyState;
         this.state = state;
         this.bgm = new Audio('/audio/tngend2.mp3');
+        this.width = 1024;
+        this.height = 576;
     }
 
     spawnEnemy() {
@@ -42,7 +43,7 @@ class Game {
         this.bgm.play();
 
         // Default entities on start
-        this.entities.push(this.player);
+        this.entities.push(new Player());
         this.entities.push(new Enemy());
                 
         // Run event listeners

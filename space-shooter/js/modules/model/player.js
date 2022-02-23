@@ -7,8 +7,8 @@ export default class Player {
     constructor(projectiles = 0) {
         this.width = 58;
         this.height = 95;
-        this.x = innerWidth / 2 - this.width / 2;
-        this.y = innerHeight - this.height + 10;
+        this.x = game.width / 2 - this.width / 2;
+        this.y = game.height - this.height + 10;
         this.hp = 1;
         this.speed = 3;
         this.img = 'player-ss.png';
@@ -26,10 +26,10 @@ export default class Player {
 
     update() {
         // Checks movement
-        if(game.keys.rightPressed && this.x <= innerWidth - this.width / 2) this.x += this.speed;
+        if(game.keys.rightPressed && this.x <= game.width - this.width / 2) this.x += this.speed;
         if(game.keys.leftPressed && this.x >= 0) this.x -= this.speed;
         if(game.keys.upPressed && this.y >= 0) this.y -= this.speed;
-        if(game.keys.downPressed && this.y <= innerHeight - this.height / 2) this.y += this.speed;
+        if(game.keys.downPressed && this.y <= game.height - this.height / 2) this.y += this.speed;
     }
 
     draw(index, spritePos){
@@ -70,8 +70,8 @@ export default class Player {
             // Create new projectile and add to list
             game.projectiles.push(
                 new Projectile(
-                    game.player.x + game.player.width / 2 - 12, 
-                    game.player.y, 
+                    this.x + this.width / 2 - 12, 
+                    this.y, 
                     '#15f4ee', 
                     'player'
                 )

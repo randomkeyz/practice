@@ -45,4 +45,5 @@ button{
 }
 canvas{
     display: none;
+    margin: 0 auto;
 }

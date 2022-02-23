@@ -39,7 +39,7 @@ export default class Projectile{
             this.y += this.speed;
 
             // Remove projectile from projectiles array if it falls below view
-            if(this.y >= innerHeight) game.projectiles.splice(index, 1);
+            if(this.y >= game.height) game.projectiles.splice(index, 1);
         }
     }
 
