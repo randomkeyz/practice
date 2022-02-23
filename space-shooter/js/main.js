@@ -1,8 +1,13 @@
 import game from './modules/controller/game.js';
 
 const startBtn = document.querySelector('#startGame');
+const replayBtn = document.querySelector('#replayGame');
+
 startBtn.onclick = () => {
+    const startBtn = document.querySelector('#startGame');
     document.querySelector('canvas').style.display = 'block';
+    document.querySelector('#main').style.display = 'none';
     game.start();
-    startBtn.remove(); // Remove btn so that start animation loop isnt triggered again
 };
+
+replayBtn.onclick = () => game.replay();

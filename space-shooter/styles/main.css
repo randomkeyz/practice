@@ -33,10 +33,15 @@ body{
 }
 #main h1{
     font: italic 5em 'EdgeOfTheGalaxy', sans-serif ;
-    margin-top: 2em;
 }
 #main h2{
     margin: 1em 0 0.5em;
+}
+#game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 button{
     width: 7em;
@@ -45,5 +50,8 @@ button{
 }
 canvas{
     display: none;
-    margin: 0 auto;
+    border: 2px solid #fff;
+}
+.gameOverMenu{
+    display: none;
 }

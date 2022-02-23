@@ -11,8 +11,9 @@ export default class Enemy {
         this.y = 0;
         this.hp = 1;
         this.img = 'enemy.png';
-        this.speed = 1;
+        this.speed = 2;
         this.scale = 0.75;
+        //this.attackPattern = 0;
     }
 
     boundary() {
@@ -61,8 +62,6 @@ export default class Enemy {
         const projectileCount = game.projectiles.filter(projectile => {
             return projectile.type === 'enemy';
         });
-
-        console.log(projectileCount);
 
         if(projectileCount.length < 3){
             // Play projectile sound

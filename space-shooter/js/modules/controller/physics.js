@@ -84,11 +84,12 @@ class Physics {
     }
 
     createCollisionPairs() {
+        const player = game.entities.filter(entity => entity instanceof Player)[0];
+        if(!player) return false;
+        
         // All possible pairs of things that can collide
         let collisionPairs = [];
-
         const playerProjectiles = game.projectiles.filter(projectile => projectile.type === 'player');
-        const player = game.entities.filter(entity => entity instanceof Player)[0];
 
         // Enemies loop
         game.entities
@@ -120,13 +121,16 @@ class Physics {
     }
 
     detectCollision() {
+        const collisionPairs = this.createCollisionPairs();
+        if(!collisionPairs) return false;
+
         const resolveProjectile = projectile => {
             let index = game.projectiles.findIndex(entity => entity === projectile);
             game.projectiles.splice(index, 1);
         };
 
         //check intersecting boundaries
-        this.createCollisionPairs().forEach(pair => {
+        collisionPairs.forEach(pair => {
             if(pair.a.boundary().intersects(pair.b.boundary())){
                 // Resolve projectile collisions. If projectiles hit each other they cancel out
                 if(pair.a instanceof Projectile && pair.b instanceof Projectile){
@@ -148,7 +152,7 @@ class Physics {
 
                     setTimeout(() => {
                         game.state.running = false;
-                    }, 1);
+                    }, 800);
                 }
 
                 // Resolve enemy collision

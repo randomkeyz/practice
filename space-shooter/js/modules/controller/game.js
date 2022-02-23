@@ -6,7 +6,7 @@ import { setRandomInterval } from './../utility.js';
 
 // Controller
 class Game {
-    constructor( state = { running: true, score: 0 }, keyState = {
+    constructor( state = { running: true, score: 0, spawnEnemyInt: null }, keyState = {
         rightPressed: false,
         leftPressed: false,
         upPressed: false,
@@ -20,6 +20,7 @@ class Game {
         this.keys = keyState;
         this.state = state;
         this.bgm = new Audio('/audio/tngend2.mp3');
+        this.redAlert = new Audio('/audio/redalert.mp3');
         this.width = 1024;
         this.height = 576;
     }
@@ -36,8 +37,7 @@ class Game {
 
     // Should only be called once. Multiple calls will result in compounding loops and increase in game speed
     start() {
-        const redAlert = new Audio('/audio/redalert.mp3');
-        redAlert.play();
+        this.redAlert.play();
         this.bgm.loop = true;
         this.bgm.volume -= 0.2;
         this.bgm.play();
@@ -55,17 +55,47 @@ class Game {
         }
         const spawnEnemyInt = setRandomInterval(spawnEnemy, 500, 2500); */
 
-        this.spawnEnemy();
+        this.state.spawnEnemyInt = this.spawnEnemy();
 
         requestAnimationFrame(this.update.bind(this));
     };
 
     end(){
-        const wrapper = document.querySelector('#main');
-        const canvas = document.querySelector('canvas');
-        canvas.remove();
+        const main = document.querySelector('#main');
+        const startingMenu = document.querySelector('.startingMenu');
+        const gameOverMenu = document.querySelector('.gameOverMenu');
+        const finalScore = document.querySelector('#finalScore');
+        
+        renderer.canvas.style.display = 'none';
+        startingMenu.style.display = 'none';
+        gameOverMenu.style.display = 'block';
+        main.style.display = 'block';
+        
         this.bgm.pause();
-        wrapper.innerHTML = `<h1>GAME OVER</h1><h3>Final Score: ${this.state.score}</h3>`;
+        finalScore.innerHTML = `${this.state.score}`;
+        this.state.spawnEnemyInt.clear(); // Clear interval so no other enemies are spawned in the bg
+    }
+
+    replay(){
+        const gameOverMenu = document.querySelector('.gameOverMenu');
+        gameOverMenu.style.display = 'none';
+        this.state.running = true;
+        this.state.score = 0;
+        this.entities.splice(0, this.entities.length); // Clear entity array
+        
+        renderer.canvas.style.display = 'block';
+        main.style.display = 'none';
+        renderer.context.clearRect(0, 0, this.width, this.height); // Clearing canvas
+        
+        this.redAlert.load(); // Restart audio from beginning
+        this.bgm.load(); // Restart audio from beginning
+
+        // Default entities on start
+        this.entities.push(new Player());
+        this.entities.push(new Enemy());
+        this.state.spawnEnemyInt = this.spawnEnemy(); // Restart spawn enemy interval
+
+        requestAnimationFrame(this.update());
     }
 
     // Gets called every sec

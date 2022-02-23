@@ -13,18 +13,27 @@
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body>
-        <canvas></canvas>
-        <section id="main">
-            <h1>SPACE SHOOTER</h1>
-            <p>Your shuttle has boldy gone into enemy territory. Send as many enemies as you can to Sto'Vo'Kor to survive!</p>
-            <h2>Instructions:</h2>
-            <ul>
-                <li>Up, Down, Left, and Right arrow keys to steer</li>
-                <li>Spacebar to shoot </li>
-                <li>(3 shots before cooldown cycle, 2 shots to destroy an enemy)</li>
-            </ul>
-            <button id="startGame">START</button>
-            <p>(Please adjust your volume. This game uses sound.)</p>
+        <section id="game">
+            <canvas></canvas>
+            <div id="main">
+                <div class="startingMenu">
+                    <h1>SPACE SHOOTER</h1>
+                    <p>Your shuttle has boldy gone into enemy territory. Send as many enemies as you can to Sto'Vo'Kor to survive!</p>
+                    <h2>Instructions:</h2>
+                    <ul>
+                        <li>Up, Down, Left, and Right arrow keys to steer</li>
+                        <li>Spacebar to shoot </li>
+                        <li>(3 shots before cooldown cycle, 2 shots to destroy an enemy)</li>
+                    </ul>
+                    <button id="startGame">START</button>
+                    <p>(Please adjust your volume. This game uses sound.)</p>
+                </div>
+                <div class="gameOverMenu">
+                    <h1>GAME OVER</h1>
+                    <h3>Final Score: <span id="finalScore"></span></h3>
+                    <button id="replayGame">REPLAY</button>
+                </div>
+            </div>
         </section>
         
         <script type="module" src="js/main.js"></script>
