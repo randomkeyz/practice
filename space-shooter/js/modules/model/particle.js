@@ -1,3 +1,4 @@
+import game from '../controller/game.js';
 import renderer from './../view/renderer.js';
 
 export default class Particle {
@@ -23,10 +24,25 @@ export default class Particle {
 
     update(){
         this.draw();
+        this.position.y += this.velocity.y;
+
+        // STAR PARTICLES
+        // If fades !== true, particle is a star for background
+        if(!this.fades) {
+            if(this.position.y < game.height) {
+                return this.position.y += this.velocity.y;
+            } else {
+                this.position.y = 0;
+                this.position.x = Math.random() * innerWidth;
+                return; 
+            }
+        }
+
+        // EXPLOSION PARTICLES
+        // If fades == true, particle is an explosion type
         this.position.x += this.velocity.x * 3;
         this.position.y += this.velocity.y * 3;
-
-        if(this.fades) this.opacity -= 0.03;
+        this.opacity -= 0.03;
     }
 }
 

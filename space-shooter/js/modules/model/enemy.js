@@ -7,7 +7,8 @@ export default class Enemy {
     constructor() {
         this.width = 108;
         this.height = 97;
-        this.x = Math.floor(Math.random() * game.width - this.width / 2);
+        // To get random num between 2 nums: Math.random() * (max - min) + min ;
+        this.x = Math.floor(Math.random() * ((game.width - this.width / 2) - this.width / 2) +  this.width / 2); // Ensures enemies are not spawned outside of window
         this.y = 0;
         this.hp = 1;
         this.img = 'enemy.png';
@@ -43,9 +44,6 @@ export default class Enemy {
         
         this.update(index);
 
-        //context.translate(enemy.x - enemy.width * scale / 2, enemy.y - enemy.height * scale / 2);
-        //context.rotate(180 * Math.PI / 180);
-
         enemyImg.onload = (() => {
             renderer.context.drawImage(
                 enemyImg, 
@@ -59,9 +57,7 @@ export default class Enemy {
 
     fire(){
         // Check to see how many projectiles are active. Only 3 on screen at a time.
-        const projectileCount = game.projectiles.filter(projectile => {
-            return projectile.type === 'enemy';
-        });
+        const projectileCount = game.projectiles.filter(projectile => projectile.type === 'enemy');
 
         if(projectileCount.length < 3){
             // Play projectile sound

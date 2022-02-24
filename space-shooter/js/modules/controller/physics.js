@@ -1,3 +1,4 @@
+import html from '../model/globals.js';
 import game from './game.js';
 import Player from './../model/player.js';
 import Enemy from './../model/enemy.js';
@@ -9,24 +10,25 @@ class Physics {
         addEventListener('keydown', ({key}) => {
             switch(key){
                 case 'ArrowRight':
-                    game.keys.rightPressed = true;
+                    game.state.keys.rightPressed = true;
                     break;
                 case 'ArrowLeft':
-                    game.keys.leftPressed = true;
+                    game.state.keys.leftPressed = true;
                     break;
                 case 'ArrowUp':
-                    game.keys.upPressed = true;
+                    game.state.keys.upPressed = true;
                     break;
                 case 'ArrowDown':
-                    game.keys.downPressed = true;
+                    game.state.keys.downPressed = true;
                     break;
                 case ' ':
+                    game.state.keys.spacePressed = true;
+                    
                     // Filter for player entity and fire
-                    game.entities
-                        .filter(entity => entity instanceof Player)[0]
-                        .fire();
+                    const player = game.entities.filter(entity => entity instanceof Player)[0];
+                    if(!player) return;
+                    player.fire();
 
-                    game.keys.spacePressed = true;
                     break;
             }
         });
@@ -34,19 +36,19 @@ class Physics {
         addEventListener('keyup', ({key}) => {
             switch(key){
                 case 'ArrowRight':
-                    game.keys.rightPressed = false;
+                    game.state.keys.rightPressed = false;
                     break;
                 case 'ArrowLeft':
-                    game.keys.leftPressed = false;
+                    game.state.keys.leftPressed = false;
                     break;
                 case 'ArrowUp':
-                    game.keys.upPressed = false;
+                    game.state.keys.upPressed = false;
                     break;
                 case 'ArrowDown':
-                    game.keys.downPressed = false;
+                    game.state.keys.downPressed = false;
                     break;
                 case ' ':
-                    game.keys.spacePressed = false;
+                    game.state.keys.spacePressed = false;
                     break;
             }
         })
@@ -85,13 +87,13 @@ class Physics {
 
     createCollisionPairs() {
         const player = game.entities.filter(entity => entity instanceof Player)[0];
-        if(!player) return false;
+        if(!player) return false; // stops collision detect if no player present
         
         // All possible pairs of things that can collide
         let collisionPairs = [];
         const playerProjectiles = game.projectiles.filter(projectile => projectile.type === 'player');
 
-        // Enemies loop
+        // ENEMIES LOOP
         game.entities
             .filter(entity => entity instanceof Enemy)
             .forEach(enemy => {
@@ -104,7 +106,7 @@ class Physics {
                 });
             });
 
-        // Enemy projectiles loop
+        // ENEMY PROJECTILES LOOP
         game.projectiles
             .filter(projectile => projectile.type === 'enemy')
             .forEach(enemyProjectile => {
@@ -122,17 +124,18 @@ class Physics {
 
     detectCollision() {
         const collisionPairs = this.createCollisionPairs();
-        if(!collisionPairs) return false;
+        if(!collisionPairs) return false; // stops collision detect if no player present
 
         const resolveProjectile = projectile => {
             let index = game.projectiles.findIndex(entity => entity === projectile);
             game.projectiles.splice(index, 1);
         };
 
-        //check intersecting boundaries
+        // Check intersecting boundaries
         collisionPairs.forEach(pair => {
             if(pair.a.boundary().intersects(pair.b.boundary())){
-                // Resolve projectile collisions. If projectiles hit each other they cancel out
+                // RESOLVE PROJECTILE COLLISIONS 
+                //If projectiles hit each other they cancel out
                 if(pair.a instanceof Projectile && pair.b instanceof Projectile){
                     resolveProjectile(pair.a);
                     resolveProjectile(pair.b);
@@ -143,29 +146,33 @@ class Physics {
                 };
 
 
-                // Resolve player collision
+                // RESOLVE PLAYER COLLISION
                 if(pair.a instanceof Player){
                     this.explosion(pair.a);
 
                     let aIndex = game.entities.findIndex(entity => entity === pair.a);
-                    game.entities.splice(aIndex, 1);
+                    game.entities.splice(aIndex, 1); // Remove player on hit
 
+                    // Let game run a little longer so we can see player explosion
                     setTimeout(() => {
                         game.state.running = false;
                     }, 800);
                 }
 
-                // Resolve enemy collision
+                // RESOLVE ENEMY COLLISIONS
                 if(pair.b instanceof Enemy){
                     let bIndex = game.entities.findIndex(entity => entity === pair.b);
+
                     // Reduce hp by one if it hasn't reached 0
-                    if(game.entities[bIndex].hp > 0) return game.entities[bIndex].hp -=1;
+                    if(game.entities[bIndex].hp > 0 && !(pair.a instanceof Player)) return game.entities[bIndex].hp -=1;
+
                     // Once hp reaches 0, remove entity and set explosion
                     game.entities.splice(bIndex, 1);
                     this.explosion(pair.b);
 
                     // Update score
                     game.state.score += 10;
+                    html.score.innerHTML = `Score: ${game.state.score}`;
                 }
             }
         });

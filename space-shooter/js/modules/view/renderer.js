@@ -10,13 +10,17 @@ class Renderer {
 
     // Gets called every sec
     render() {
-        // Drawing canvas
+        /** 
+         * FOR LOOPS used instead of FOR EACH for performance. Switching improved lag. 
+        **/
+
+        // DRAW CANVAS
         this.canvas.width = game.width;
         this.canvas.height = game.height;
         this.context.fillStyle = 'black';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Drawing entities
+        // DRAW AND UPDATE ENTITIES
         let spritePos = 1,
             entity,
             entities = game.entities;
@@ -26,8 +30,8 @@ class Renderer {
 
             if(entity instanceof Player) {
                 // Change sprite based on key press
-                if(game.keys.leftPressed) spritePos = 0;
-                else if (game.keys.rightPressed) spritePos = 2;
+                if(game.state.keys.leftPressed) spritePos = 0;
+                if(game.state.keys.rightPressed) spritePos = 2;
 
                 entity.draw(i, spritePos);
             }
@@ -35,27 +39,34 @@ class Renderer {
             if(entity instanceof Enemy) entity.draw(i);
         }
 
-        // Draw projectiles and update position
-        game.projectiles.forEach((projectile, index) => {
+        // DRAW AND UPDATE PROJECTILES
+        for(let n = 0; n < game.projectiles.length; n++) {
             let color;
-            if(projectile.type === 'player') color = '#4fc3f7';
+            if(game.projectiles[n].type === 'player') color = '#4fc3f7';
             else color = 'red';
                 
-            projectile.draw(projectile.x, projectile.y, color, index);
-        });
+            game.projectiles[n].draw(game.projectiles[n].x, game.projectiles[n].y, color, n);
+        };
 
-        // Draw and update particles
+        // DRAW AND UPDATE BACKGROUND STARS
+        for(let b = 0; b < game.background.length; b++){
+            game.background[b].update();
+        }
+
+        // DRAW AND UPDATE EXPLOSION PARTICLES
         if(game.particles.length <= 0 ) return; // returns if no particles present
-        game.particles.forEach((particle, i) => {
-            if(particle.position.y - particle.radius >= game.height){
-                particle.position.x = Math.random() * game.width;
-                particle.position.y = -particle.radius;
+        for(let p = 0; p < game.particles.length; p++){
+            if(game.particles[p].position.y - game.particles[p].radius >= game.height){
+                game.particles[p].position.x = Math.random() * game.width;
+                game.particles[p].position.y = -game.particles[p].radius;
             }
     
             // Remove particles that are no longer visible or run update
-            if(particle.opacity <= 0) game.particles.splice(i, 1);
-            else particle.update();
-        });
+            if(game.particles[p].opacity <= 0) game.particles.splice(p, 1);
+            else game.particles[p].update();
+        }
+
+        
     }
 }
 

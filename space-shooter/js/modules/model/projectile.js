@@ -25,9 +25,6 @@ export default class Projectile{
     }
 
     update(index) {
-        // Redraw projectile
-        //this.draw(this.x, this.y, this.color, index);
-
         // Either move or remove projectile
         if(this.type === 'player') {
             this.y -= this.speed;
@@ -45,8 +42,6 @@ export default class Projectile{
 
     draw(x, y, color, index) {
         renderer.context.beginPath();
-        // ctx.arc(x, y, radius, startAngle, endAngle [, counterclockwise]);
-        //renderer.context.arc(x, y, 5, 0, 2 * Math.PI);
         
         //ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle [, counterclockwise]);
         renderer.context.ellipse(x, y, this.radiusX, this.radiusY, Math.PI, 0, 2 * Math.PI);

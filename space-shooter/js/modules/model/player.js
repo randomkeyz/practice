@@ -26,10 +26,10 @@ export default class Player {
 
     update() {
         // Checks movement
-        if(game.keys.rightPressed && this.x <= game.width - this.width / 2) this.x += this.speed;
-        if(game.keys.leftPressed && this.x >= 0) this.x -= this.speed;
-        if(game.keys.upPressed && this.y >= 0) this.y -= this.speed;
-        if(game.keys.downPressed && this.y <= game.height - this.height / 2) this.y += this.speed;
+        if(game.state.keys.rightPressed && this.x <= game.width - this.width / 2) this.x += this.speed;
+        if(game.state.keys.leftPressed && this.x >= 0) this.x -= this.speed;
+        if(game.state.keys.upPressed && this.y >= 0) this.y -= this.speed;
+        if(game.state.keys.downPressed && this.y <= game.height - this.height / 2) this.y += this.speed;
     }
 
     draw(index, spritePos){
@@ -58,9 +58,7 @@ export default class Player {
 
     fire(){
         // Check to see how many projectiles are active. Only 3 on screen at a time.
-        const projectileCount = game.projectiles.filter(projectile => {
-            return projectile.type === 'player';
-        });
+        const projectileCount = game.projectiles.filter(projectile => projectile.type === 'player');
 
         if(projectileCount.length < 3){
             // Play projectile sound
