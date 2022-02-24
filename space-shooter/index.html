@@ -7,14 +7,21 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Space Shooter</title>
-        <meta name="description" content="Space shooter">
+        <title>Star Trek themed space shooter game</title>
+        <meta name="description" content="Star Trek themed space shooter game">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Antonio&display=swap" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="styles/main.css">
     </head>
     <body>
         <section id="game">
-            <canvas></canvas>
+            <div class="innerWrap">
+                <div id="score">Score: 0</div><br/>
+                <canvas></canvas>
+            </div>
             <div id="main">
                 <div class="startingMenu">
                     <h1>SPACE SHOOTER</h1>
