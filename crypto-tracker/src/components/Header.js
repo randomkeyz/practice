@@ -2,25 +2,19 @@
 import styled from 'styled-components';
 import logoSmall from './../assets/images/logo-small.png';
 import logo from './../assets/images/logo.png';
+import { Link } from 'react-router-dom';
 
 const StyledHeader = styled.header`
     //background-color: ${({ theme }) => theme.colors.header};
 
-    h1{
-        color:red;
-    }
 
-    /* & represents the current element */
-    &:hover {
-        background-color: black;
-    }
 `;
 
 const Header = ({ isMobile }) => {
 
     return ( 
         <StyledHeader>
-            <img src={isMobile ? logoSmall : logo} alt='Logo'/>
+            <Link to='/'><img src={isMobile ? logoSmall : logo} alt='Logo'/></Link>
         </StyledHeader>
 
     );

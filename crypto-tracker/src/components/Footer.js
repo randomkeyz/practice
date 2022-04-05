@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import coin from './../assets/images/coin.png';
-import edit from './../assets/images/edit.png';
+//import edit from './../assets/images/edit.png';
 import home from './../assets/images/home.png';
 import star from './../assets/images/star.png';
+import account from './../assets/images/account.png';
+import { Link } from 'react-router-dom';
 
 const StyledFooter = styled.footer`
     a{
@@ -29,10 +31,12 @@ const Footer = () => {
         <StyledFooter>
             <a href="https://nomics.com" target="_blank">Crypto Market Cap &amp; Pricing Data Provided By Nomics</a>
             <div>
-                <span><img src={home} alt='Home'/></span>
-                <span><img src={coin} alt='Portfolio'/></span>
-                <span><img src={star} alt='Favorites'/></span>
-                <span><img src={edit} alt='Edit'/></span>
+                <span><Link to='/'><img src={home} alt='Home'/></Link></span>
+                <span><Link to='/assets'><img src={coin} alt='Assets'/></Link></span>
+                <span><Link to='/favs'><img src={star} alt='Favorites'/></Link></span>
+                <span>
+                    <Link to='/signup'><img src={account} alt='Sign Up'/></Link>
+                </span>
             </div>
         </StyledFooter>
      );
