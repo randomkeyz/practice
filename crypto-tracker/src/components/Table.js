@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import TableTitle from './TableTitle';
 import Row from './Row';
+
 
 const StyledTable = styled.div`
     margin: 1em 0;
@@ -8,16 +8,30 @@ const StyledTable = styled.div`
     hr{
         border: none;
         height: 1px;
-        background: #D4D4D4;
+        background: ${props => props.theme.colors.lightGray};
     }
 `;
 
-const Table = ({top10}) => {
+const StyledTableTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    span{
+        font-weight: bold;
+    }
+`;
+
+const Table = ({rows}) => {
     return ( 
         <StyledTable>
-            <TableTitle />
+            <StyledTableTitle>
+                <span>Name</span>
+                <span>Market Cap</span>
+                <span>Price</span>
+            </StyledTableTitle>
             <hr />
-            {top10.map((coin, index) => (
+
+            {rows.map((coin, index) => (
                 <Row key={index} coin={coin} />
             ))}
             
