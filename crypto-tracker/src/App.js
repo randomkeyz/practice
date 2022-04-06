@@ -1,67 +1,70 @@
-import { useState, useEffect } from 'react'; // Using hooks to determine size for responsiveness
+import { useState, useEffect, useCallback } from 'react'; // Using hooks to determine size for responsiveness
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './components/styles/Global';
 import theme from './components/styles/Theme';
 import Header from './components/Header';
 import Title from './components/Title';
 import Search from './components/Search';
-import Table from './components/Table';
 import { Container } from './components/styles/Container.styles';
 import Footer from './components/Footer';
+import { Outlet, useLocation } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
-  const [windowSize, setWindowSize] = useState(0);
+  // Hooks must be run in exact same order
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [top10, setTop10] = useState([]);
-  // Nomics Key
-  const key = '7069f6efa90b59ebeecb07454127d5887d88cc2d';
 
+  let location = useLocation().pathname;
+  const key = process.env.REACT_APP_NOMICS_API_KEY; // Nomics Key
+  const isMobile = windowSize < 1023;
+  const updateWidth = () => setWindowSize(window.innerWidth); // Update window width state
+
+  // 2nd param is array of things to watch. If those change, function is rerun. If left as empty array it only runs on mount.
+  // Handle screen resize
   useEffect(() => {
-    const getTop10 = async () => {
-      const top10FromServer = await fetchTop10();
-      setTop10(top10FromServer);
-    };
-    getTop10()
-
-    updateWidth();
     window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
-    return () => {
-      window.removeEventListener('resize', updateWidth);
+  // Handle top 10
+  const fetchTop10 = useCallback(async () => {
+    try{
+      const res = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=${key}&interval=1d,30d&per-page=10&page=1`);
+      const data = await res.json();
+      setTop10(data);
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
     }
   }, []);
 
-  // Update window width state
-  const updateWidth = () => {
-    const width = window.innerWidth;
-    setWindowSize(width);
-  };
+  useEffect(() => {
+    fetchTop10();
 
-  const responsive = {
-    mobile: windowSize < 1023
-  };
+    // Fetch top 5 every sec and then clear interval
+    const interval = setInterval(() => {
+      fetchTop10();
+    }, 5000);
+    return () => clearInterval(interval);
 
-  
-
-  // Get top 10 cryptos
-  const fetchTop10 = async () => {
-      const res = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=${key}&interval=1d,30d&per-page=10&page=1`);
-      const data = await res.json();
-
-      return data;
-  };
+  }, [fetchTop10]);
 
   return (
     <ThemeProvider theme={theme}>
-      <>
-      <GlobalStyles />
+      <AuthProvider>
+        <GlobalStyles />
         <Container>
-          <Header isMobile={responsive.mobile} />
+          <Header isMobile={isMobile} />
           <Title />
-          <Search />
-          <Table top10={top10} />
+          { location !== '/signup' && <Search /> }
+          
+          {/* Will nest components for shared layout based on url */}
+          <Outlet context={[top10]} />
         </Container>
-        <Footer isMobile={responsive.mobile} />
-      </>
+        <Footer isMobile={isMobile} />
+      </AuthProvider>
     </ThemeProvider>
   );
 }
