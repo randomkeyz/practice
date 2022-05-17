@@ -25,6 +25,10 @@ const Title = () => {
                 return 'Top Cryptocurrencies by Market Cap';
             case '/signup':
                 return 'Create new account';
+            case '/login':
+                return 'Login';
+            case '/dashboard':
+                return 'Dashboard';
             default:
                 return renderGreeting();
         }

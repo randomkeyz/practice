@@ -5,6 +5,7 @@ import home from './../assets/images/home.png';
 import star from './../assets/images/star.png';
 import account from './../assets/images/account.png';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'; 
 
 const StyledFooter = styled.footer`
     a{
@@ -27,15 +28,21 @@ const StyledFooter = styled.footer`
 `;
 
 const Footer = () => {
+    const { currentUser } = useAuth();
+
     return ( 
         <StyledFooter>
             <a href="https://nomics.com" target="_blank">Crypto Market Cap &amp; Pricing Data Provided By Nomics</a>
             <div>
                 <span><Link to='/'><img src={home} alt='Home'/></Link></span>
-                <span><Link to='/assets'><img src={coin} alt='Assets'/></Link></span>
-                <span><Link to='/favs'><img src={star} alt='Favorites'/></Link></span>
                 <span>
-                    <Link to='/signup'><img src={account} alt='Sign Up'/></Link>
+                    { currentUser !== null && <Link to='/assets'><img src={coin} alt='Assets'/></Link> }
+                </span>
+                <span>
+                    { currentUser !== null && <Link to='/favs'><img src={star} alt='Favorites'/></Link> }
+                </span>
+                <span>
+                    <Link to={currentUser ? '/dashboard' : '/login'}><img src={account} alt='Login'/></Link>
                 </span>
             </div>
         </StyledFooter>

@@ -4,7 +4,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './routes/Home';
-import SignUp from './routes/SignUp';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import SignUp from './components/SignUp';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,6 +15,8 @@ ReactDOM.render(
       <Routes>
         <Route path='/' element={<App />}>
           <Route index element={<Home />}></Route>
+          <Route path='login' element={<Login />}></Route>
+          <Route path='dashboard' element={<Dashboard />}></Route>
           <Route path='signup' element={<SignUp />}></Route>
         </Route>
       </Routes>

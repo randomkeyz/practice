@@ -87,6 +87,16 @@ const GlobalStyles = createGlobalStyle`
         /*background: ${({ theme }) => theme.colors.body}*/
         font: normal 16px 'Open Sans', serif;
     }
+
+    button {
+        background: #3FA2F7;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        width: 5.8125em;
+        height: 2.1875em;
+        border-radius: 0.3em;
+    }
 `;
 
 export default GlobalStyles;

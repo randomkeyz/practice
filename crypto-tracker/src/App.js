@@ -8,17 +8,24 @@ import Search from './components/Search';
 import { Container } from './components/styles/Container.styles';
 import Footer from './components/Footer';
 import { Outlet, useLocation } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import AuthProvider from './contexts/AuthContext';
 
 function App() {
   // Hooks must be run in exact same order
   const [windowSize, setWindowSize] = useState(window.innerWidth);
   const [top10, setTop10] = useState([]);
+  const [showSearchBar, setShowSearchBar] = useState(true);
 
   let location = useLocation().pathname;
   const key = process.env.REACT_APP_NOMICS_API_KEY; // Nomics Key
   const isMobile = windowSize < 1023;
   const updateWidth = () => setWindowSize(window.innerWidth); // Update window width state
+
+  // Determine whether to render search bar
+  useEffect(() => {
+    if(location == '/login' || location == '/signup' || location == '/dashboard') return setShowSearchBar(false);
+    return setShowSearchBar(true);
+  }, [location]);
 
   // 2nd param is array of things to watch. If those change, function is rerun. If left as empty array it only runs on mount.
   // Handle screen resize
@@ -58,7 +65,7 @@ function App() {
         <Container>
           <Header isMobile={isMobile} />
           <Title />
-          { location !== '/signup' && <Search /> }
+          { showSearchBar && <Search />}
           
           {/* Will nest components for shared layout based on url */}
           <Outlet context={[top10]} />
