@@ -29,6 +29,10 @@ const Title = () => {
                 return 'Login';
             case '/dashboard':
                 return 'Dashboard';
+            case '/assets':
+                return 'My Assets';
+            case '/watchlist':
+                return 'My Watchlist';
             default:
                 return renderGreeting();
         }
