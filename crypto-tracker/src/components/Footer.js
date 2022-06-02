@@ -28,25 +28,21 @@ const StyledFooter = styled.footer`
 `;
 
 const Footer = () => {
-    const { currentUser } = useAuth();
+    const {currentUser} = useAuth();
 
     return ( 
         <StyledFooter>
             <a href="https://nomics.com" target="_blank">Crypto Market Cap &amp; Pricing Data Provided By Nomics</a>
             <div>
                 <span><Link to='/'><img src={home} alt='Home'/></Link></span>
-                <span>
-                    { currentUser !== null && <Link to='/assets'><img src={coin} alt='Assets'/></Link> }
-                </span>
-                <span>
-                    { currentUser !== null && <Link to='/favs'><img src={star} alt='Favorites'/></Link> }
-                </span>
+                <span><Link to='/assets'><img src={coin} alt='Assets'/></Link></span>
+                <span><Link to='/watchlist'><img src={star} alt='Favorites'/></Link></span>
                 <span>
                     <Link to={currentUser ? '/dashboard' : '/login'}><img src={account} alt='Login'/></Link>
                 </span>
             </div>
         </StyledFooter>
-     );
+    );
 }
  
 export default Footer;

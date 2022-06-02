@@ -97,6 +97,15 @@ const GlobalStyles = createGlobalStyle`
         height: 2.1875em;
         border-radius: 0.3em;
     }
+
+    input {
+        padding: 0.4em 0.7em;
+        border-radius: 0.4em;
+        border: 1px solid ${props => props.theme.colors.lightGray};
+        height: 2.5em;
+        margin: 0.3em 0;
+        width: 100%;
+    }
 `;
 
 export default GlobalStyles;
