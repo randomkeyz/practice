@@ -1,16 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
 import { 
+    getAuth,
     sendPasswordResetEmail, 
     signOut, 
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword, 
-    onAuthStateChanged,
-    connectAuthEmulator
+    onAuthStateChanged
 } from 'firebase/auth';
-import { auth } from '../firebase';
+import { firebaseApp } from '../firebase';
 
 
+const auth = getAuth(firebaseApp); // Passing app param is optional, but can pass to be explicit
 const AuthContext = createContext();
 
 // Will allow use to access auth context from any component
