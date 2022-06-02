@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const StyledSearchResults = styled.div`
     border: 1px solid ${props => props.theme.colors.lightGray};
@@ -63,7 +63,9 @@ const Search = ({currencyList}) => {
                     <StyledList>
                         {
                             results.map((result, index) => (
-                                <StyledResult key={index}>{result.name} ({result.symbol})</StyledResult>
+                                <StyledResult key={index}>
+                                    <Link to={`currencies/${result.symbol.toLowerCase()}/`}>{result.name} ({result.symbol})</Link>
+                                </StyledResult>
                             ))
                         }
                     </StyledList>
