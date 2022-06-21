@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const {logout} = useAuth();
+    const { logout } = useAuth();
     
     return ( 
         <>

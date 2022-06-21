@@ -9,19 +9,18 @@ import { Container } from '../components/styles/Container.styles';
 import Footer from '../components/Footer';
 import { Outlet } from 'react-router-dom';
 
-
 const Layout = () => {
     const [windowSize, setWindowSize] = useState(window.innerWidth);
-    const [currencyList, setCoinList] = useState();
+    const [currencyList, setCurrencyList] = useState();
     const [top10, setTop10] = useState([]);
-    const [fullData, setFullData] = useState([]);
+    const [allData, setAllData] = useState([]);
 
     const nomicsKey = process.env.REACT_APP_NOMICS_API_KEY; // Nomics Key
     const isMobile = windowSize < 1023;
     const updateWidth = () => setWindowSize(window.innerWidth); // Update window width state
 
     // FETCH INIT DATA
-    const fetchCryptoInit = async () => {
+    const fetchDataInit = async () => {
         try{
             const res = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=${nomicsKey}`);
             const data = await res.json();
@@ -40,7 +39,7 @@ const Layout = () => {
                     name: currency.name
                 };
             });
-            setCoinList(currencies);
+            setCurrencyList(currencies);
 
             console.log('crypto init');
         } catch (err) {
@@ -48,34 +47,36 @@ const Layout = () => {
         }
     };
 
-
-    // FETCH TOP 10
-     const fetchTop10 = useCallback(async () => {
+    // FETCH DATA
+    const fetchFullData = useCallback(async () => {
         try{
-        const res = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=${nomicsKey}&interval=1d,30d&per-page=10&page=1`);
-        const data = await res.json();
-        setTop10(data);
+            const res = await fetch(`https://api.nomics.com/v1/currencies/ticker?key=${nomicsKey}`);
+            const data = await res.json();
+            setAllData(data);
 
-        console.log(data);
+            // SET TOP 10
+            const top10Pull = data.filter((currency, index) => {
+                if(index <= 9) return currency;
+                return;
+            });
+            setTop10(top10Pull);
+
+            console.log(data);
         } catch (err) {
-        console.log(err);
+            console.log(err);
         }
     }, []);
 
     useEffect(() => {
-        fetchCryptoInit();
+        fetchDataInit();
 
-        // Fetch top 10 every sec and then clear interval
+        // Fetch top 5 every sec and then clear interval
         const interval = setInterval(() => {
-        fetchTop10();
+            fetchFullData();
         }, 5000);
         return () => clearInterval(interval);
 
-    }, [fetchTop10]); 
-
-
-
-
+    }, [fetchFullData]);
 
     // 2nd param is array of things to watch. If those change, function is rerun. If left as empty array it only runs on mount.
     // Handle screen resize
@@ -92,7 +93,7 @@ const Layout = () => {
                 <Title />
                 <Search currencyList={currencyList} />
                 {/* Will nest components for shared layout based on url */}
-                <Outlet context={top10} />
+                <Outlet context={[top10, allData]} />
             </Container>
             <Footer isMobile={isMobile} />
         </ThemeProvider>
